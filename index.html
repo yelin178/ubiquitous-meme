@@ -149,6 +149,76 @@
             padding: 15px;
             margin-top: 10px;
         }
+        .random-section {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .random-title {
+            font-size: 1.5em;
+            color: #d35400;
+            margin-bottom: 20px;
+        }
+        .dice-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.3em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .dice-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        .dice-btn.rolling {
+            animation: diceRoll 0.5s ease-in-out infinite;
+        }
+        @keyframes diceRoll {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(90deg); }
+            50% { transform: rotate(180deg); }
+            75% { transform: rotate(270deg); }
+        }
+        .random-result {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .random-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 150px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .random-card .emoji {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .random-card .name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #d35400;
+        }
+        .result-title {
+            color: #e67e22;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -161,6 +231,14 @@
         
         <div id="menuView">
             <div class="dishes-grid" id="dishesGrid"></div>
+            
+            <div class="random-section">
+                <div class="random-title">🤔 不知道吃什么了，随机吧</div>
+                <button class="dice-btn" onclick="randomSelect()">
+                    🎲 点击随机选择
+                </button>
+                <div class="random-result" id="randomResult"></div>
+            </div>
         </div>
         
         <div id="detailView" class="detail-view">
@@ -201,14 +279,14 @@
             { name: "麻婆豆腐", emoji: "🧈", ingredients: ["嫩豆腐1盒", "肉末100g", "豆瓣酱1勺", "花椒粉1勺", "蒜末适量", "葱花适量", "生抽1勺", "淀粉水适量"], steps: ["豆腐切2cm方块，淡盐水焯水去豆腥", "热锅凉油，炒肉末至变色", "加入豆瓣酱炒出红油", "加入蒜末炒香", "加适量清水，放入豆腐轻轻推动", "加生抽调味，淀粉水勾芡", "撒花椒粉和葱花即可"], tips: "豆腐焯水加盐能使其更加紧实不易碎。推动时用轻轻的方式。" },
             { name: "地三鲜", emoji: "🍆", ingredients: ["茄子1个", "土豆1个", "青椒1个", "蒜末适量", "生抽2勺", "老抽1勺", "糖少许", "淀粉适量"], steps: ["茄子、土豆切滚刀块，青椒切块", "茄子块加盐腌制10分钟，挤去水分", "土豆块炸至金黄，茄子块炸软", "热锅凉油，爆香蒜末", "放入青椒块翻炒片刻", "加入炸好的茄子和土豆", "加生抽、老抽、糖调味，淀粉水勾芡"], tips: "茄子腌制后要挤干水分再炸，这样不吸油。土豆炸到表面金黄即可。" },
             { name: "青椒肉丝", emoji: "🌶️", ingredients: ["青椒3个", "猪里脊肉200g", "姜丝适量", "生抽2勺", "料酒1勺", "淀粉适量", "盐适量"], steps: ["青椒切丝，里脊肉切丝", "肉丝加盐、料酒、淀粉腌制10分钟", "热锅凉油，滑炒肉丝至变色盛出", "锅中再加少许油，炒香姜丝", "放入青椒丝翻炒至断生", "加入肉丝，加生抽调味即可"], tips: "肉丝滑炒变色就要盛出，不要炒太久。青椒要炒到稍微变软但保持脆感。" },
-            { name: "糖醋里脊", emoji: "🍖", ingredients: ["猪里脊肉300g", "番茄酱2勺", "白醋1勺", "白糖2勺", "淀粉适量", "白芝麻少许"], steps: ["里脊肉切条，加盐、料酒、淀粉腌制", "调糖醋汁：番茄酱、白醋、白糖、淀粉、水混合", "肉条裹淀粉，油炸至金黄酥脆", "复炸一次使其更酥脆", "另起锅，倒入糖醋汁煮至浓稠", "放入炸好的肉条快速翻炒挂汁", "撒白芝麻即可"], tips: "肉条要复炸一次才能外酥里嫩。糖醋汁要煮到起大泡时再放肉。" },
+            { name: "葱香鸡腿肉", emoji: "🍗", ingredients: ["鸡腿2个", "大葱3根", "姜片5片", "生抽2勺", "料酒1勺", "盐适量", "胡椒粉少许"], steps: ["鸡腿去骨切块，用料酒、盐、胡椒粉腌制15分钟", "大葱切段，葱白和葱绿分开", "热锅凉油，爆香姜片和葱白", "放入鸡腿肉块翻炒至变色", "加生抽调味，继续翻炒至熟透", "撒上葱绿段翻炒均匀即可"], tips: "鸡腿肉要去骨切块更容易入味。葱段要分开放，葱白爆香，葱绿最后放保持翠绿。" },
             { name: "回锅肉", emoji: "🥩", ingredients: ["五花肉300g", "青蒜3根", "郫县豆瓣酱1勺", "甜面酱1勺", "姜片5片", "料酒1勺", "花椒10粒"], steps: ["五花肉冷水下锅，加姜片、料酒煮至筷子可插入", "捞出冷却后切薄片", "热锅不放油，小火煸炒肉片至出油卷曲", "加入花椒、郫县豆瓣酱炒出红油", "加入甜面酱翻炒均匀", "放入青蒜段翻炒至断生即可"], tips: "五花肉要煮到七八成熟才能切薄片。煸炒时要小火慢逼出油脂。" },
             { name: "干煸四季豆", emoji: "🫛", ingredients: ["四季豆300g", "干辣椒10个", "花椒1勺", "蒜末适量", "肉末100g", "芽菜适量", "盐适量"], steps: ["四季豆去头尾和老筋，掰成段", "四季豆小火慢煸至表皮起皱发白", "热锅凉油，爆香干辣椒、花椒、蒜末", "放入肉末炒至变色", "加入煸好的四季豆", "加芽菜、盐调味，翻炒均匀即可"], tips: "四季豆必须充分煸熟以去除毒素，可以加少许水焖一下确保安全。" },
             { name: "红烧茄子", emoji: "🍆", ingredients: ["茄子2个", "蒜末适量", "葱花适量", "生抽2勺", "老抽1勺", "糖1勺", "淀粉适量"], steps: ["茄子切滚刀块，加盐腌制10分钟", "挤去茄子水分，裹上干淀粉", "油炸茄子至金黄变软", "调酱汁：生抽、老抽、糖、淀粉、水混合", "热锅凉油，爆香蒜末", "倒入酱汁煮开，放入茄子翻炒挂汁", "撒葱花即可"], tips: "茄子腌制后要挤干水分再炸，这样吸油少。裹淀粉炸出来外皮更酥。" },
-            { name: "蒜蓉粉丝蒸扇贝", emoji: "🦪", ingredients: ["扇贝6个", "粉丝1把", "蒜末3瓣", "葱花适量", "蒸鱼豉油2勺", "料酒1勺"], steps: ["扇贝刷洗干净，撬开取肉", "粉丝泡软铺在扇贝壳上", "扇贝肉放回壳中，加料酒去腥", "蒜末炒香，铺在扇贝上", "水开后蒸5-6分钟", "取出淋上蒸鱼豉油，撒葱花", "热油淋在葱花上即可"], tips: "蒸的时间不要太长，否则扇贝肉会变老。蒜末炒至金黄更香。" },
+            { name: "五花肉烧豆角", emoji: "🥩🫛", ingredients: ["五花肉300g", "豆角400g", "蒜末适量", "姜片5片", "生抽2勺", "老抽1勺", "糖1勺", "料酒1勺"], steps: ["五花肉切块，冷水焯水去血沫", "热锅凉油，煸炒五花肉至出油", "加入姜片、蒜末爆香", "放入豆角翻炒至变色", "加料酒、生抽、老抽、糖调味", "加少许水焖煮10分钟至豆角熟透", "大火收汁即可"], tips: "豆角一定要焖煮熟透才能吃，否则有毒。五花肉要煸出油才香。" },
             { name: "辣子鸡", emoji: "🍗", ingredients: ["鸡腿肉500g", "干辣椒50g", "花椒2勺", "姜片5片", "蒜片适量", "葱段适量", "白芝麻少许", "盐适量"], steps: ["鸡腿肉切小块，加盐、料酒、淀粉腌制", "油炸鸡块至金黄酥脆", "干辣椒切段去籽", "热锅凉油，爆香花椒、干辣椒、姜蒜片", "放入炸好的鸡块快速翻炒", "撒白芝麻和葱段即可"], tips: "干辣椒去籽可以减少辣度但保持香味。鸡块要炸得够干才能酥脆。" },
             { name: "水煮牛肉", emoji: "🥩", ingredients: ["牛肉300g", "豆芽200g", "莴笋1根", "干辣椒20g", "花椒2勺", "郫县豆瓣酱2勺", "姜蒜末适量", "淀粉适量", "高汤适量"], steps: ["牛肉切薄片，加盐、料酒、淀粉腌制", "豆芽、莴笋焯水铺在碗底", "热锅凉油，炒香豆瓣酱、姜蒜末", "加入高汤煮开，加盐调味", "滑入牛肉片煮至变色捞出放在菜上", "撒上干辣椒段和花椒", "热油淋在辣椒花椒上即可"], tips: "牛肉要切得够薄，腌制时加少许水抓匀保持嫩滑。淋油要够热才能激出香味。" },
-            { name: "京酱肉丝", emoji: "🥩", ingredients: ["猪里脊肉300g", "豆皮3张", "葱丝适量", "甜面酱2勺", "番茄酱1勺", "糖1勺", "淀粉适量", "姜末适量"], steps: ["里脊肉切丝，加盐、料酒、淀粉腌制", "调酱汁：甜面酱、番茄酱、糖、淀粉、水混合", "热锅凉油，滑炒肉丝至变色盛出", "另起锅，倒入酱汁煮至浓稠", "放入肉丝快速翻炒挂汁", "豆皮切成方形，卷葱丝和肉丝食用"], tips: "甜面酱是这道菜的灵魂。肉丝要炒得嫩滑，不要炒太久。" },
+            { name: "贵州蘸水菜", emoji: "🥬", ingredients: ["菠菜200g", "生菜200g", "黄瓜1根", "番茄1个", "辣椒面2勺", "蒜末3瓣", "葱花适量", "生抽2勺", "香醋1勺", "香油1勺", "白芝麻少许"], steps: ["各种蔬菜洗净，菠菜焯水", "调蘸水：辣椒面、蒜末、白芝麻放入碗中", "热油淋在辣椒面上激出香味", "加入生抽、香醋、香油、葱花调成蘸料", "蔬菜蘸蘸料食用即可"], tips: "蘸水的关键是热油激香辣椒面。可以根据喜好加入腐乳或折耳根增加风味。" },
             { name: "酸菜鱼", emoji: "🐟", ingredients: ["黑鱼1条", "酸菜200g", "泡椒10个", "姜片5片", "蒜片适量", "野山椒5个", "蛋清1个", "淀粉适量", "盐适量"], steps: ["黑鱼处理干净，片成鱼片", "鱼片加盐、蛋清、淀粉腌制15分钟", "酸菜切段，焯水去酸涩", "热锅凉油，爆香姜蒜、泡椒、野山椒", "放入酸菜翻炒出香味", "加高汤或水煮开", "滑入鱼片煮至变色即可", "热油淋在酸菜鱼上增加香味"], tips: "鱼片腌制时加蛋清会更嫩滑。下锅时不要用力搅动，轻轻推动即可。" },
             { name: "红烧排骨", emoji: "🍖", ingredients: ["排骨500g", "冰糖20g", "八角2个", "桂皮1小块", "香叶2片", "生抽2勺", "老抽1勺", "料酒2勺", "姜片5片", "葱段适量"], steps: ["排骨剁成小块，冷水焯水去血沫", "热锅凉油，小火炒冰糖至琥珀色", "放入排骨翻炒上色", "加入料酒、生抽、老抽、八角、桂皮、香叶", "加开水没过排骨，大火烧开转小火炖40分钟", "大火收汁，撒葱花即可"], tips: "炒糖色时火候要小，颜色变成琥珀色即可加水炖。收汁时要不断翻动。" },
             { name: "木须肉", emoji: "🥩", ingredients: ["猪里脊肉200g", "鸡蛋2个", "黄瓜1根", "木耳适量", "胡萝卜半根", "葱姜丝适量", "生抽2勺", "淀粉适量", "盐适量"], steps: ["里脊肉切片，加盐、料酒、淀粉腌制", "鸡蛋打散炒熟盛出", "木耳泡发撕小朵，黄瓜、胡萝卜切片", "热锅凉油，滑炒肉片至变色盛出", "锅中再加少许油，炒香葱姜丝", "放入胡萝卜、木耳翻炒", "加入黄瓜、肉片、鸡蛋", "加生抽和盐调味，淀粉水勾芡"], tips: "木耳要泡发充分，可以加面粉清洗更干净。这道菜色彩丰富，注意火候保持脆感。" },
@@ -265,7 +343,32 @@
         }
 
         init();
+
+        function randomSelect() {
+            const btn = document.querySelector('.dice-btn');
+            const resultDiv = document.getElementById('randomResult');
+            
+            btn.classList.add('rolling');
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                const shuffled = [...dishes].sort(() => Math.random() - 0.5);
+                const selected = shuffled.slice(0, 3);
+                
+                resultDiv.innerHTML = `<div class="result-title">🎯 为您推荐今日菜单：</div>`;
+                selected.forEach((dish, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'random-card';
+                    card.style.animationDelay = `${index * 0.1}s`;
+                    card.innerHTML = `<div class="emoji">${dish.emoji}</div><div class="name">${dish.name}</div>`;
+                    card.onclick = () => showDetail(dishes.findIndex(d => d.name === dish.name));
+                    resultDiv.appendChild(card);
+                });
+                
+                btn.classList.remove('rolling');
+                btn.disabled = false;
+            }, 1500);
+        }
     </script>
 </body>
 </html>
-
