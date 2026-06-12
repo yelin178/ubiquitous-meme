@@ -20,6 +20,17 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .chef-name {
+            font-size: 0.9em;
+            color: #9b59b6;
+            font-weight: bold;
+        }
         h1 {
             text-align: center;
             color: #d35400;
@@ -77,7 +88,35 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
         .detail-view.active {
-            display: block;
+            display: flex;
+            gap: 30px;
+        }
+        .detail-content {
+            flex: 1;
+        }
+        .chef-animation {
+            width: 72px;
+            height: 72px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            animation: shake 0.5s ease-in-out infinite;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .chef-emoji {
+            font-size: 3em;
+            animation: flip 0.8s ease-in-out infinite;
+        }
+        @keyframes shake {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        @keyframes flip {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(30deg) scale(1.1); }
         }
         .detail-view h2 {
             color: #d35400;
@@ -114,6 +153,10 @@
 </head>
 <body>
     <div class="container">
+        <div class="header-top">
+            <span></span>
+            <span class="chef-name">👩🍳 梅梅大厨在线烹饪</span>
+        </div>
         <h1>今天吃什么？</h1>
         
         <div id="menuView">
@@ -121,22 +164,27 @@
         </div>
         
         <div id="detailView" class="detail-view">
-            <button class="back-btn" onclick="showMenu()">返回菜单</button>
-            <h2 id="dishName"></h2>
-            <div class="detail-section">
-                <h4>配料</h4>
-                <ul id="ingredients"></ul>
-            </div>
-            <div class="detail-section">
-                <h4>做法</h4>
-                <ol id="steps"></ol>
-            </div>
-            <div class="detail-section">
-                <h4>注意事项</h4>
-                <div class="tip-box">
-                    <p id="tips"></p>
+            <div class="detail-content">
+                <button class="back-btn" onclick="showMenu()">返回菜单</button>
+                <h2 id="dishName"></h2>
+                <div class="detail-section">
+                    <h4>配料</h4>
+                    <ul id="ingredients"></ul>
+                </div>
+                <div class="detail-section">
+                    <h4>做法</h4>
+                    <ol id="steps"></ol>
+                </div>
+                <div class="detail-section">
+                    <h4>注意事项</h4>
+                    <div class="tip-box">
+                        <p id="tips"></p>
+                    </div>
                 </div>
             </div>
+            <div class="chef-animation">
+                    <span class="chef-emoji">👩🍳</span>
+                </div>
         </div>
     </div>
 
@@ -168,7 +216,10 @@
             { name: "酱牛肉", emoji: "🥩", ingredients: ["牛腱子肉1000g", "黄酱3勺", "生抽2勺", "老抽1勺", "料酒2勺", "八角3个", "桂皮1小块", "香叶3片", "花椒1勺", "姜片5片", "葱段适量"], steps: ["牛腱子肉冷水浸泡2小时去血水", "冷水下锅焯水，去浮沫", "锅中加水，放入所有调料和黄酱", "放入牛肉，大火烧开转小火炖2小时", "关火后焖1小时入味", "捞出切片即可", "可配蒜汁或辣椒油食用"], tips: "牛肉要冷水下锅焯水才能去腥。炖好后要焖着使其入味。切片要逆纹切。" },
             { name: "蒜泥白肉", emoji: "🥩", ingredients: ["五花肉500g", "蒜末3瓣", "葱段适量", "姜片5片", "料酒1勺", "生抽2勺", "香醋1勺", "辣椒油1勺", "香油少许", "花椒粉少许"], steps: ["五花肉冷水下锅，加葱姜料酒煮熟", "大约煮40分钟至筷子可插入", "捞出冷却切成薄片", "调蘸汁：蒜末、生抽、香醋、辣椒油、香油、花椒粉混合", "肉片摆盘，淋上蘸汁即可"], tips: "五花肉要煮到筷子轻松插入才算熟。切片越薄越好，可用冷藏后的肉更好切。" },
             { name: "红烧狮子头", emoji: "🧆", ingredients: ["猪肉末500g", "荸荠3个", "鸡蛋1个", "淀粉适量", "姜末适量", "葱末适量", "生抽2勺", "老抽1勺", "料酒1勺", "白糖1勺"], steps: ["肉末加姜葱末、鸡蛋、淀粉、料酒顺一个方向搅打上劲", "荸荠切碎加入肉末中", "团成大丸子，表面裹淀粉", "油炸至表面金黄定型", "锅中加水、生抽、老抽、白糖煮开", "放入丸子，小火炖1小时", "大火收汁即可"], tips: "肉末要顺一个方向搅打才能上劲。荸荠的加入能解腻并增加口感。" },
-            { name: "干锅花菜", emoji: "🥦", ingredients: ["有机花菜1颗", "五花肉100g", "干辣椒10个", "花椒1勺", "蒜片适量", "姜片5片", "豆瓣酱1勺", "生抽2勺", "糖少许"], steps: ["花菜掰成小朵，用淡盐水浸泡", "焯水至断生，捞出沥干", "五花肉切片煸炒出油", "加入干辣椒、花椒、姜蒜片爆香", "加入豆瓣酱炒出红油", "放入花菜大火快炒", "加生抽、糖调味即可"], tips: "花菜焯水时间不要太长，保持脆感。五花肉要煸出油才香。" }
+            { name: "干锅花菜", emoji: "🥦", ingredients: ["有机花菜1颗", "五花肉100g", "干辣椒10个", "花椒1勺", "蒜片适量", "姜片5片", "豆瓣酱1勺", "生抽2勺", "糖少许"], steps: ["花菜掰成小朵，用淡盐水浸泡", "焯水至断生，捞出沥干", "五花肉切片煸炒出油", "加入干辣椒、花椒、姜蒜片爆香", "加入豆瓣酱炒出红油", "放入花菜大火快炒", "加生抽、糖调味即可"], tips: "花菜焯水时间不要太长，保持脆感。五花肉要煸出油才香。" },
+            { name: "蒸蛋", emoji: "🥚", ingredients: ["鸡蛋3个", "温水200ml", "盐适量", "葱花适量", "香油少许"], steps: ["鸡蛋打散，加入温水和盐搅拌均匀", "用筛网过滤蛋液，去除气泡", "容器内壁抹少许油，倒入蛋液", "水开后放入蒸锅，小火蒸10-12分钟", "取出后淋上香油，撒葱花即可"], tips: "蛋和水的比例约1:2，温水温度约40度最佳。蒸的时候要小火，防止蜂窝。" },
+            { name: "樟树辣椒炒肉", emoji: "🌶️🥩", ingredients: ["樟树辣椒200g", "五花肉200g", "蒜末适量", "姜片3片", "生抽2勺", "料酒1勺", "盐适量"], steps: ["五花肉切片，用料酒腌制10分钟", "樟树辣椒斜切，蒜姜切末", "热锅不放油，放入辣椒煸炒至表皮起皱", "加入五花肉片继续煸炒出油", "加生抽、盐调味，翻炒均匀即可"], tips: "樟树辣椒本身很辣，煸炒时间要足够才能释放香味。五花肉要煸到微焦更香。" },
+            { name: "煎豆腐", emoji: "🧈", ingredients: ["嫩豆腐1块", "鸡蛋1个", "淀粉适量", "盐适量", "生抽1勺", "葱花适量"], steps: ["豆腐切厚片，表面拍少许盐腌制5分钟", "鸡蛋打散，豆腐片裹一层淀粉再裹蛋液", "热锅凉油，放入豆腐片煎至两面金黄", "加少许生抽调味，撒葱花即可"], tips: "豆腐要吸干水分再煎，否则容易溅油。火候不要太大，防止煎糊。" }
         ];
 
         function showMenu() {
@@ -217,3 +268,4 @@
     </script>
 </body>
 </html>
+
